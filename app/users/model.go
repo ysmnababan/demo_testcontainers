@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 type UserEntity struct {
@@ -15,5 +16,10 @@ type UserEntity struct {
 }
 
 func (UserEntity) TableName() string {
-    return "users" // match your actual table name
+	return "users" // match your actual table name
+}
+
+func (u *UserEntity) BeforeUpdate(tx *gorm.DB) (err error) {
+	u.UpdatedAt = time.Now()
+	return
 }
